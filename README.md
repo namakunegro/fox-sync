@@ -8,9 +8,9 @@
 	cd ~/OrangeFox_sync
 	git clone https://gitlab.com/OrangeFox/sync.git # (or, using ssh, "git clone git@gitlab.com:OrangeFox/sync.git")
 
-### 2. Do the syncing (this can take up to 1 hour, and can use up to 40GB of disk space) - below is an example, for 11.0 (amend as required for other branches) ##
+### 2. Do the syncing (this can take up to 1 hour, and can use up to 40GB of disk space) - below is an example, for 12.1 (amend as required for other branches) ##
 	cd ~/OrangeFox_sync/sync/
-	./orangefox_sync.sh --branch 11.0 --path ~/fox_11.0
+	./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
 Notes:
 - You *MUST* supply an *ABSOLUTE* path name for the "--path" switch
 - If the sync process gets stuck, you might need to terminate it with Ctrl-C and then run the script again
@@ -22,28 +22,28 @@ Notes:
 	12.1
 	11.0
 
-## To update the manifest, and the recovery sources, and the vendor trees (given the example of the 11.0 branch above), follow these steps: ##
+## To update the manifest, and the recovery sources, and the vendor trees (given the example of the 12.1 branch above), follow these steps: ##
 ----------------------------------
-	cd ~/fox_11.0/
+	cd ~/fox_12.1/
 	repo sync # (ignore all errors and suggestions relating to "android_bootable_recovery")
-	cd ~/fox_11.0/bootable/recovery/
+	cd ~/fox_12.1/bootable/recovery/
 	git pull
-	cd ~/fox_11.0/vendor/recovery/
-	git pull
-
-## To update only the recovery sources (given the example of the 11.0 branch above), follow these steps: ##
-----------------------------------
-	cd ~/fox_11.0/bootable/recovery/
+	cd ~/fox_12.1/vendor/recovery/
 	git pull
 
-## To update only the vendor tree (given the example of the 11.0 branch above) follow these steps: ##
+## To update only the recovery sources (given the example of the 12.1 branch above), follow these steps: ##
 ----------------------------------
-	cd ~/fox_11.0/vendor/recovery/
+	cd ~/fox_12.1/bootable/recovery/
 	git pull
 
-## To update only the manifest (given the example of the 11.0 branch above), follow these steps: ##
+## To update only the vendor tree (given the example of the 12.1 branch above) follow these steps: ##
 ----------------------------------
-	cd ~/fox_11.0/
+	cd ~/fox_12.1/vendor/recovery/
+	git pull
+
+## To update only the manifest (given the example of the 12.1 branch above), follow these steps: ##
+----------------------------------
+	cd ~/fox_12.1/
 	repo sync # (ignore all errors and suggestions relating to "android_bootable_recovery")
 
 ## To see the syntax of the orangefox_sync.sh script, follow these steps: ##
