@@ -1,7 +1,7 @@
 diff --git a/core/Makefile b/core/Makefile
 --- a/core/Makefile
 +++ b/core/Makefile
-@@ -1185,6 +1185,38 @@ $(INSTALLED_VENDOR_BOOTIMAGE_TARGET): $(AVBTOOL) $(BOARD_AVB_VENDOR_BOOTIMAGE_KE
+@@ -1189,6 +1189,38 @@ $(INSTALLED_VENDOR_BOOTIMAGE_TARGET): $(AVBTOOL) $(BOARD_AVB_VENDOR_BOOTIMAGE_KE
  	   --partition_size $(BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE) \
  	   --partition_name vendor_boot $(INTERNAL_AVB_VENDOR_BOOT_SIGNING_ARGS) \
  	   $(BOARD_AVB_VENDOR_BOOT_ADD_HASH_FOOTER_ARGS)
@@ -40,7 +40,7 @@ diff --git a/core/Makefile b/core/Makefile
  else
  $(INSTALLED_VENDOR_BOOTIMAGE_TARGET):
  	$(call pretty,"Target vendor_boot image: $@")
-@@ -2236,6 +2268,33 @@ $(INTERNAL_RECOVERY_RAMDISK_FILES_TIMESTAMP): $(MKBOOTFS) \
+@@ -2244,6 +2276,33 @@ $(INTERNAL_RECOVERY_RAMDISK_FILES_TIMESTAMP): $(MKBOOTFS) \
  	# Use rsync because "cp -Rf" fails to overwrite broken symlinks on Mac.
  	rsync -a --exclude=sdcard $(IGNORE_RECOVERY_SEPOLICY) $(IGNORE_CACHE_LINK) $(TARGET_ROOT_OUT) $(TARGET_RECOVERY_OUT)
  	# Modifying ramdisk contents...
@@ -74,7 +74,7 @@ diff --git a/core/Makefile b/core/Makefile
  	$(if $(filter true,$(BOARD_BUILD_SYSTEM_ROOT_IMAGE)),, \
  	  ln -sf /system/bin/init $(TARGET_RECOVERY_ROOT_OUT)/init)
  	# Removes $(TARGET_RECOVERY_ROOT_OUT)/init*.rc EXCEPT init.recovery*.rc.
-@@ -2330,6 +2389,32 @@ $(foreach b,$(INSTALLED_BOOTIMAGE_TARGET), $(eval $(call add-dependency,$(b),$(c
+@@ -2338,6 +2397,32 @@ $(foreach b,$(INSTALLED_BOOTIMAGE_TARGET), $(eval $(call add-dependency,$(b),$(c
  $(INSTALLED_BOOTIMAGE_TARGET): $(recoveryimage-deps)
  	$(call pretty,"Target boot image from recovery: $@")
  	$(call build-recoveryimage-target, $@, $(PRODUCT_OUT)/$(subst .img,,$(subst boot,kernel,$(notdir $@))))
@@ -107,7 +107,7 @@ diff --git a/core/Makefile b/core/Makefile
  endif # BOARD_USES_RECOVERY_AS_BOOT
  
  ifndef BOARD_CUSTOM_BOOTIMG_MK
-@@ -2360,6 +2445,33 @@ endif # BUILDING_RECOVERY_IMAGE
+@@ -2368,6 +2453,33 @@ endif # BUILDING_RECOVERY_IMAGE
  .PHONY: recoveryimage
  recoveryimage: $(INSTALLED_RECOVERYIMAGE_TARGET) $(RECOVERY_RESOURCE_ZIP)
  
