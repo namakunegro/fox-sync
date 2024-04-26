@@ -51,3 +51,7 @@ Notes:
 	cd ~/OrangeFox_sync/sync/
 	./orangefox_sync.sh --help
 
+
+# For instructions on building OrangeFox, see:
+"https://wiki.orangefox.tech/en/dev/building"
+
