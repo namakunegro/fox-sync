@@ -4,8 +4,8 @@
 # - Syncs the relevant twrp minimal manifest, and patches it for building OrangeFox
 # - Pulls in the OrangeFox recovery sources and vendor tree
 # - Author:  DarthJabba9
-# - Version: generic:014
-# - Date:    08 September 2022
+# - Version: generic:015
+# - Date:    11 November 2024
 #
 # 	* Changes for v007 (20220430)  - make it clear that fox_12.1 is not ready
 # 	* Changes for v008 (20220708)  - fox_12.1 is now ready
@@ -15,11 +15,12 @@
 # 	* Changes for v012 (20220806)  - update the system vold patchset number to 12
 # 	* Changes for v013 (20220803)  - try to ensure that the submodules are updated
 # 	* Changes for v014 (20220908)  - don't apply the system vold patch: it is no longer needed
+# 	* Changes for v015 (20241111)  - rename the old vendor "master" branch to "legacy"
 #
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20220908";
+SCRIPT_VERSION="20241111";
 
 # the base version of the current OrangeFox
 FOX_BASE_VERSION="R11.1";
@@ -341,7 +342,7 @@ local BRANCH=$FOX_BRANCH;
 clone_fox_vendor() {
 local URL="";
 local BRANCH=$FOX_BRANCH;
-   [ "$BASE_VER" -lt 10 ] && BRANCH="master"; # less than fox_10.0 use the "master" branch
+   [ "$BASE_VER" -lt 10 ] && BRANCH="legacy"; # less than fox_10.0 use the old "master" (now "legacy") branch
    
    if [ "$USE_SSH" = "0" ]; then
       URL="https://gitlab.com/OrangeFox/vendor/recovery.git";
