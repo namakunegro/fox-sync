@@ -19,6 +19,7 @@ Notes:
 
 ## These manifest branches are supported by the orangefox_sync.sh script: ##
 ----------------------------------
+	14.1
 	12.1
 	11.0
 
