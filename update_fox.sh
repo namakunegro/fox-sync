@@ -3,12 +3,12 @@
 # - Example script to sync updates to the minimal build system and OrangeFox sources
 # - There is very little error checking 
 # - Author:  DarthJabba9
-# - Version: generic:005
-# - Date:    31 May 2023
+# - Version: generic:006
+# - Date:    24 February 2025
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20230531";
+SCRIPT_VERSION="20250224";
 
 # Our starting point (Fox base dir)
 BASE_DIR="$PWD";
@@ -32,7 +32,8 @@ help_screen() {
   echo "    -p, -P, --path <absolute_path>	root of the minimal manifest";
   echo "";
   echo "Examples:";
-  echo "    $0 --path ~/OrangeFox_12";
+  echo "    $0 --path ~/OrangeFox_14.1";
+  echo "    $0 --path ~/OrangeFox_12.1";
   echo "    $0 --path ~/OrangeFox/fox_11.0 --debug";
   echo "";
   echo "- You must supply an *absolute* path for the '--path' switch";

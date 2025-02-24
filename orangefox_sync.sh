@@ -4,8 +4,8 @@
 # - Syncs the relevant twrp minimal manifest, and patches it for building OrangeFox
 # - Pulls in the OrangeFox recovery sources and vendor tree
 # - Author:  DarthJabba9
-# - Version: generic:016
-# - Date:    31 May 2023
+# - Version: generic:017
+# - Date:    24 February 2025
 #
 # 	* Changes for v007 (20220430)  - make it clear that fox_12.1 is not ready
 # 	* Changes for v008 (20220708)  - fox_12.1 is now ready
@@ -17,11 +17,12 @@
 # 	* Changes for v014 (20220908)  - don't apply the system vold patch: it is no longer needed
 # 	* Changes for v015 (20221206)  - remove support for manifests earlier than 11.0; only fox_11.0 and fox_12.1 are now officially supported
 # 	* Changes for v016 (20230531)  - dispense with the submodules stuff
+# 	* Changes for v017 (20250224)  - add fox_14.1 branch (this branch is *EXPERIMENTAL*)
 #
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20230531";
+SCRIPT_VERSION="20250224";
 
 # the base version of the current OrangeFox
 FOX_BASE_VERSION="R11.1";
@@ -36,6 +37,17 @@ MANIFEST_DIR="";
 MIN_MANIFEST="https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git";
 
 # functions to set up things for each supported manifest branch
+do_fox_141() {
+	MIN_MANIFEST="https://github.com/nebrassy/platform_manifest_twrp_aosp.git";
+	BASE_VER=14;
+	FOX_BRANCH="fox_14.1";
+	FOX_DEF_BRANCH="fox_14.1";
+	TWRP_BRANCH="twrp-14";
+	DEVICE_BRANCH="android-14";
+	test_build_device="vayu"; # the device whose tree we can clone for compiling a test build
+	[ -z "$MANIFEST_DIR" ] && MANIFEST_DIR="$BASE_DIR/$FOX_DEF_BRANCH";
+}
+
 do_fox_121() {
 	BASE_VER=12;
 	FOX_BRANCH="fox_12.1";
@@ -67,12 +79,13 @@ help_screen() {
   echo "    -p, -P, --path <absolute_path>	sync the minimal manifest into the directory '<absolute_path>'";
   echo "    -b, -B, --branch <branch>		get the minimal manifest for '<branch>'";
   echo "    	'<branch>' must be one of the following branches:";
+  echo "    		14.1 (note that this branch is *EXPERIMENTAL*)";
   echo "    		12.1";
   echo "    		11.0";
   echo "Examples:";
+  echo "    $0 --branch 14.1 --path ~/OrangeFox_14.1";
+  echo "    $0 --branch 14.1 --path ~/OrangeFox/14.1 --debug";
   echo "    $0 --branch 12.1 --path ~/OrangeFox_12.1";
-  echo "    $0 --branch 12.1 --path ~/OrangeFox/12.1 --debug";
-  echo "    $0 --branch 11.0 --path ~/OrangeFox_11.0";
   echo "    $0 --branch 11.0 --path ~/OrangeFox_11 --ssh 1";
   echo "";
   echo "- You *MUST* supply an *ABSOLUTE* path for the '--path' switch";
@@ -111,19 +124,24 @@ Process_CMD_Line() {
              # branch
                 -b | -B | --branch)
                 	shift;
-                 	if [ "$1" = "12.1" ];
-                 		then do_fox_121;
-               		elif [ "$1" = "11.0" ];
-               			then do_fox_110;
-                	else
-                  	   	echo "Invalid branch \"$1\". Read the help screen below.";
-                  	   	echo "";
-                  	   	help_screen;
-                	fi
-                ;;
+			if [ "$1" = "14.1" ]; then
+				echo "**************";
+				echo "*** WARNING***: the fox_14.1 branch is *EXPERIMENTAL*! Also, syncing will take a *VERY* long time";
+				echo "**************";
+				do_fox_141;
+			elif [ "$1" = "12.1" ]; then
+				do_fox_121;
+			elif [ "$1" = "11.0" ]; then
+				do_fox_110;
+			else
+				echo "Invalid branch \"$1\". Read the help screen below.";
+				echo "";
+				help_screen;
+			fi
+		;;
 
-        esac
-     shift
+	esac
+      shift
    done
 
    # do we have all the necessary branch information?
