@@ -8,7 +8,7 @@
 	cd ~/OrangeFox_sync
 	git clone https://gitlab.com/OrangeFox/sync.git # (or, using ssh, "git clone git@gitlab.com:OrangeFox/sync.git")
 
-### 2. Do the syncing (this can take up to 1 hour, and can use up to 40GB of disk space) - below is an example, for 12.1 (amend as required for other branches) ##
+### 2. Do the syncing (this can take up to 1-2 hours, and can use up to 40GB-80GB of disk space) - below is an example, for 12.1 (amend as required for other branches) ##
 	cd ~/OrangeFox_sync/sync/
 	./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
 Notes:
