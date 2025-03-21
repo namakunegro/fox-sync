@@ -4,8 +4,8 @@
 # - Syncs the relevant twrp minimal manifest, and patches it for building OrangeFox
 # - Pulls in the OrangeFox recovery sources and vendor tree
 # - Author:  DarthJabba9
-# - Version: generic:017
-# - Date:    24 February 2025
+# - Version: generic:018
+# - Date:    23 March 2025
 #
 # 	* Changes for v007 (20220430)  - make it clear that fox_12.1 is not ready
 # 	* Changes for v008 (20220708)  - fox_12.1 is now ready
@@ -18,14 +18,15 @@
 # 	* Changes for v015 (20221206)  - remove support for manifests earlier than 11.0; only fox_11.0 and fox_12.1 are now officially supported
 # 	* Changes for v016 (20230531)  - dispense with the submodules stuff
 # 	* Changes for v017 (20250224)  - add fox_14.1 branch (this branch is *EXPERIMENTAL*)
+# 	* Changes for v018 (20250321)  - Enter R11.2; the 11.0 manifest is no longer supported
 #
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20250224";
+SCRIPT_VERSION="20250321";
 
 # the base version of the current OrangeFox
-FOX_BASE_VERSION="R11.1";
+FOX_BASE_VERSION="R11.2";
 
 # Our starting point (Fox base dir)
 BASE_DIR="$PWD";
@@ -58,16 +59,6 @@ do_fox_121() {
 	[ -z "$MANIFEST_DIR" ] && MANIFEST_DIR="$BASE_DIR/$FOX_DEF_BRANCH";
 }
 
-do_fox_110() {
-	BASE_VER=11;
-	FOX_BRANCH="fox_11.0";
-	FOX_DEF_BRANCH="fox_11.0";
-	TWRP_BRANCH="twrp-11";
-	DEVICE_BRANCH="android-11";
-	test_build_device="vayu"; # the device whose tree we can clone for compiling a test build
-	[ -z "$MANIFEST_DIR" ] && MANIFEST_DIR="$BASE_DIR/$FOX_DEF_BRANCH";
-}
-
 # help
 help_screen() {
   echo "Script to set up things for building OrangeFox with a twrp minimal manifest";
@@ -81,12 +72,11 @@ help_screen() {
   echo "    	'<branch>' must be one of the following branches:";
   echo "    		14.1 (note that this branch is *EXPERIMENTAL*)";
   echo "    		12.1";
-  echo "    		11.0";
   echo "Examples:";
   echo "    $0 --branch 14.1 --path ~/OrangeFox_14.1";
   echo "    $0 --branch 14.1 --path ~/OrangeFox/14.1 --debug";
   echo "    $0 --branch 12.1 --path ~/OrangeFox_12.1";
-  echo "    $0 --branch 11.0 --path ~/OrangeFox_11 --ssh 1";
+  echo "    $0 --branch 12.1 --path ~/OrangeFox/12.1 --ssh 1";
   echo "";
   echo "- You *MUST* supply an *ABSOLUTE* path for the '--path' switch";
   echo "";
@@ -131,8 +121,6 @@ Process_CMD_Line() {
 				do_fox_141;
 			elif [ "$1" = "12.1" ]; then
 				do_fox_121;
-			elif [ "$1" = "11.0" ]; then
-				do_fox_110;
 			else
 				echo "Invalid branch \"$1\". Read the help screen below.";
 				echo "";

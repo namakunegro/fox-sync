@@ -21,7 +21,6 @@ Notes:
 ----------------------------------
 	14.1
 	12.1
-	11.0
 
 ## To update the manifest, and the recovery sources, and the vendor trees (given the example of the 12.1 branch above), follow these steps: ##
 ----------------------------------

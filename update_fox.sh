@@ -3,12 +3,12 @@
 # - Example script to sync updates to the minimal build system and OrangeFox sources
 # - There is very little error checking 
 # - Author:  DarthJabba9
-# - Version: generic:006
-# - Date:    24 February 2025
+# - Version: generic:007
+# - Date:    23 March 2025
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20250224";
+SCRIPT_VERSION="20250321";
 
 # Our starting point (Fox base dir)
 BASE_DIR="$PWD";
@@ -34,7 +34,7 @@ help_screen() {
   echo "Examples:";
   echo "    $0 --path ~/OrangeFox_14.1";
   echo "    $0 --path ~/OrangeFox_12.1";
-  echo "    $0 --path ~/OrangeFox/fox_11.0 --debug";
+  echo "    $0 --path ~/OrangeFox/fox_12.1 --debug";
   echo "";
   echo "- You must supply an *absolute* path for the '--path' switch";
   exit 0;
