@@ -78,14 +78,20 @@ diff --git a/core/Makefile b/core/Makefile
  	ln -sf /system/bin/init $(TARGET_RECOVERY_ROOT_OUT)/init
  	# Removes $(TARGET_RECOVERY_ROOT_OUT)/init*.rc EXCEPT init.recovery*.rc.
  	find $(TARGET_RECOVERY_ROOT_OUT) -maxdepth 1 -name 'init*.rc' -type f -not -name "init.recovery.*.rc" | xargs rm -f
-@@ -2758,6 +2821,7 @@ $(INTERNAL_RECOVERY_RAMDISK_FILES_TIMESTAMP): $(MKBOOTFS) \
+@@ -2758,10 +2821,11 @@ $(INTERNAL_RECOVERY_RAMDISK_FILES_TIMESTAMP): $(MKBOOTFS) \
  	$(if $(strip $(recovery_wipe)), \
  	  cp -f $(recovery_wipe) $(TARGET_RECOVERY_ROOT_OUT)/system/etc/recovery.wipe)
  	ln -sf prop.default $(TARGET_RECOVERY_ROOT_OUT)/default.prop
 +
  	# Silence warnings in first_stage_console.
  	touch $(TARGET_RECOVERY_ROOT_OUT)/linkerconfig/ld.config.txt
- 	cd $(TARGET_RECOVERY_ROOT_OUT) && touch ramdisk-files.txt && touch ramdisk-files.sha256sum && find . | sed "s/.\///" | sed "/lib\/modules\//d" > ramdisk-files.txt
+-	cd $(TARGET_RECOVERY_ROOT_OUT) && touch ramdisk-files.txt && touch ramdisk-files.sha256sum && find . | sed "s/.\///" | sed "/lib\/modules\//d" > ramdisk-files.txt
+-	cd $(TARGET_RECOVERY_ROOT_OUT) && find -type f | sed "s/.\/ramdisk-files.sha256sum//" | sed "/lib\/modules/d" | sed "/prop.default/d" | xargs sha256sum > ramdisk-files.sha256sum
++	cd $(TARGET_RECOVERY_ROOT_OUT) && touch ramdisk-files.txt && touch ramdisk-files.sha256sum && find . | sed "s/.\///" > ramdisk-files.txt
++	cd $(TARGET_RECOVERY_ROOT_OUT) && find -type f | sed "s/.\/ramdisk-files.sha256sum//" | sed "/prop.default/d" | xargs sha256sum > ramdisk-files.sha256sum
+ 	$(BOARD_RECOVERY_IMAGE_PREPARE)
+ 	$(hide) touch $@
+ 
 @@ -2823,6 +2887,32 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(recoveryimage-deps)
  	$(call pretty,"Target boot image from recovery: $@")
  	$(call build-recoveryimage-target, $@, $(PRODUCT_OUT)/$(subst .img,,$(subst boot,kernel,$(notdir $@))))
