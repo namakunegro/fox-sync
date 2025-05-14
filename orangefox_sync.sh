@@ -4,8 +4,8 @@
 # - Syncs the relevant twrp minimal manifest, and patches it for building OrangeFox
 # - Pulls in the OrangeFox recovery sources and vendor tree
 # - Author:  DarthJabba9
-# - Version: generic:018
-# - Date:    23 March 2025
+# - Version: generic:019
+# - Date:    14 May 2025
 #
 # 	* Changes for v007 (20220430)  - make it clear that fox_12.1 is not ready
 # 	* Changes for v008 (20220708)  - fox_12.1 is now ready
@@ -19,14 +19,15 @@
 # 	* Changes for v016 (20230531)  - dispense with the submodules stuff
 # 	* Changes for v017 (20250224)  - add fox_14.1 branch (this branch is *EXPERIMENTAL*)
 # 	* Changes for v018 (20250321)  - Enter R11.2; the 11.0 manifest is no longer supported
+# 	* Changes for v019 (20250514)  - Enter R11.3; add retry on 'git clone' failures
 #
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20250321";
+SCRIPT_VERSION="20250514";
 
 # the base version of the current OrangeFox
-FOX_BASE_VERSION="R11.2";
+FOX_BASE_VERSION="R11.3";
 
 # Our starting point (Fox base dir)
 BASE_DIR="$PWD";
@@ -219,11 +220,13 @@ clone_common() {
    if [ ! -d "device/qcom/common" ]; then
    	echo "-- Cloning qcom common ...";
 	git clone https://github.com/TeamWin/android_device_qcom_common -b $DEVICE_BRANCH device/qcom/common;
+	[ "$?" = "0" ] && echo "-- Qcom common has been cloned successfully" || echo "-- Failed to clone Qcom common! You will need to clone it manually.";
    fi
 
    if [ ! -d "device/qcom/twrp-common" ]; then
    	echo "-- Cloning twrp-common ...";
    	git clone https://github.com/TeamWin/android_device_qcom_twrp-common -b $DEVICE_BRANCH device/qcom/twrp-common;
+	[ "$?" = "0" ] && echo "-- twrp-common has been cloned successfully" || echo "-- Failed to clone twrp-common! You will need to clone it manually.";
    fi
 }
 
@@ -252,7 +255,14 @@ local BRANCH=$FOX_BRANCH;
 
    echo "-- Pulling the OrangeFox recovery sources ...";
    git clone $URL -b $BRANCH recovery;
-   [ "$?" = "0" ] && echo "-- The OrangeFox sources have been cloned successfully" || echo "-- Failed to clone the OrangeFox sources!";
+   [ "$?" = "0" ] && echo "-- The OrangeFox sources have been cloned successfully" || {
+   	echo "-- Pulling the OrangeFox recovery sources (2nd attempt) ...";
+   	sleep 1;
+   	rm -rf recovery;
+   	sleep 1;
+   	git clone $URL -b $BRANCH recovery;
+   	[ "$?" = "0" ] && echo "-- The OrangeFox sources have been cloned successfully" || abort "-- Failed to clone the OrangeFox sources! You will need to clone them manually.";
+   }
 
    # cleanup /tmp/recovery/
    echo  "-- Cleaning up the TWRP recovery sources from /tmp";
@@ -283,7 +293,14 @@ local BRANCH=$FOX_BRANCH;
    cd $MANIFEST_DIR/vendor;
    echo "-- Pulling the OrangeFox vendor tree ...";
    git clone $URL -b $BRANCH recovery;
-   [ "$?" = "0" ] && echo "-- The OrangeFox vendor tree has been cloned successfully" || echo "-- Failed to clone the OrangeFox vendor tree!";
+   [ "$?" = "0" ] && echo "-- The OrangeFox vendor tree has been cloned successfully" || {
+   	echo "-- Pulling the OrangeFox vendor tree (2nd attempt) ...";
+   	sleep 1;
+   	rm -rf recovery;
+   	sleep 1;
+   	git clone $URL -b $BRANCH recovery;
+   	[ "$?" = "0" ] && echo "-- The OrangeFox vendor tree has been cloned successfully" || abort "-- Failed to clone the OrangeFox vendor tree! You will need to clone it manually.";
+   }
 }
 
 # get device trees
