@@ -213,7 +213,15 @@ diff --git a/make/envsetup.sh b/make/envsetup.sh
  }
  
  function set_stuff_for_environment()
-@@ -2115,3 +2123,45 @@ addcompletions
+@@ -448,7 +456,6 @@ function addcompletions()
+     local completion_files=(
+       packages/modules/adb/adb.bash
+       system/core/fastboot/fastboot.bash
+-      tools/asuite/asuite.sh
+       prebuilts/bazel/common/bazel-complete.bash
+     )
+     # Completion can be disabled selectively to allow users to use non-standard completion.
+@@ -2115,3 +2122,45 @@ addcompletions
  export ANDROID_BUILD_TOP=$(gettop)
  
  . $ANDROID_BUILD_TOP/vendor/twrp/build/envsetup.sh
