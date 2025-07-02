@@ -4,8 +4,8 @@
 # - Syncs the relevant twrp minimal manifest, and patches it for building OrangeFox
 # - Pulls in the OrangeFox recovery sources and vendor tree
 # - Author:  DarthJabba9
-# - Version: generic:019
-# - Date:    14 May 2025
+# - Version: generic:020
+# - Date:    02 July 2025
 #
 # 	* Changes for v007 (20220430)  - make it clear that fox_12.1 is not ready
 # 	* Changes for v008 (20220708)  - fox_12.1 is now ready
@@ -20,11 +20,12 @@
 # 	* Changes for v017 (20250224)  - add fox_14.1 branch (this branch is *EXPERIMENTAL*)
 # 	* Changes for v018 (20250321)  - Enter R11.2; the 11.0 manifest is no longer supported
 # 	* Changes for v019 (20250514)  - Enter R11.3; add retry on 'git clone' failures
+# 	* Changes for v020 (20250702)  - patch system/vold/ for aidl weaver support
 #
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20250514";
+SCRIPT_VERSION="20250702";
 
 # the base version of the current OrangeFox
 FOX_BASE_VERSION="R11.3";
@@ -165,9 +166,14 @@ update_environment() {
 
   # the "diff" file that will be used to patch the original manifest
   PATCH_FILE="$BASE_DIR/patches/patch-manifest-$FOX_DEF_BRANCH.diff";
+  PATCH_VOLD="$BASE_DIR/patches/patch-vold-$FOX_DEF_BRANCH.diff";
 
   # the directory in which the patch of the manifest will be executed
   MANIFEST_BUILD_DIR="$MANIFEST_DIR/build";
+
+  # other possibly relevant patch directories
+  MANIFEST_SYSTEM_DIR="$MANIFEST_DIR/system";
+  MANIFEST_VOLD_DIR="$MANIFEST_SYSTEM_DIR/vold";
 }
 
 # init the script, ensure we have the patch file, and create the manifest directory
@@ -206,6 +212,15 @@ patch_minimal_manifest() {
    cd $MANIFEST_BUILD_DIR;
    patch -p1 < $PATCH_FILE;
    [ "$?" = "0" ] && echo "-- The $TWRP_BRANCH minimal manifest has been patched successfully" || abort "-- Failed to patch the $TWRP_BRANCH minimal manifest! Quitting.";
+
+   # --- 14.1 branch only ---
+   if [ "$BASE_VER" = "14" -o "$FOX_BRANCH" = "fox_14.1" ]; then
+      echo "-- Patching the $TWRP_BRANCH system/vold for building OrangeFox for native $DEVICE_BRANCH devices ...";
+      cd $MANIFEST_VOLD_DIR;
+      patch -p1 < $PATCH_VOLD;
+      [ "$?" = "0" ] && echo "-- The $TWRP_BRANCH system/vold has been patched successfully" || echo "-- Error! Failed to patch the $TWRP_BRANCH system/vold !";
+   fi
+   # 14.1 branch only
 
    # save location of manifest dir
    echo "#" &> $SYNC_LOG;
